@@ -4,6 +4,24 @@
 #include <array>
 #include <limits>
 #include <exception>
+#include <iterator>
+
+class MyException: public std::exception
+{
+	public:
+	MyException(std::string a_msg)
+		:msg{a_msg}
+	{}
+	const char* what()
+	{
+		return msg.c_str();
+	}
+
+	private:
+	std::string msg;
+
+
+};
 
 const std::array<std::string, 9> DIGIT_NAMES{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
 
@@ -50,12 +68,12 @@ unsigned short int digit2I(std::string arg)
 	{
 		if(arg.substr(0, DIGIT_NAMES[i].size()) == DIGIT_NAMES[i]) return i + 1;
 	}
-	throw std::exception("Wrong digit string");
+	throw MyException("Wrong digit string");
 }
 
 int main(int argc, char* argv[])
 {
-	std::ifstream infile("input2.txt");
+	std::ifstream infile("input.txt");
 	std::string line;
 	int sum{0};
 /*
@@ -69,29 +87,33 @@ int main(int argc, char* argv[])
 	}
 	std::cout << "SumValue: " << sum << std::endl;
 */
-
+	sum = 0;
 	while(infile >> line)
 	{
 		auto firstDigit = std::find_if(line.begin(), line.end(), [](const char& leter){return leter <= '9';});
 		auto lastDigit = std::find_if(line.rbegin(), line.rend(), [](const char& leter){return leter <= '9';});
-		int number = std::stoi(std::string{*firstDigit} + *lastDigit);
-		//std::cout << line << " :" << number << std::endl;
-		unsigned int sFirstDigit;
-		size_t sFirstDigitPoz = findFirstDigtName(line);
-		if(sFirstDigitPoz != std::string:npos)
+		unsigned int firstDigtVal = std::stoi(std::string{*firstDigit});
+		unsigned int lastDigtVal = std::stoi(std::string{*lastDigit});
+
+		size_t firstDigitDistance = findFirstDigitName(line);
+		if (( not (firstDigitDistance == std::string::npos)) and firstDigitDistance < std::distance(line.begin(), firstDigit))
 		{
-			if (std::distatnce(line.begin(), firstDigit) > sFirstDigitPoz)
-			{
-				//sFirstDigit = digit2I(
-
-
-			}
+				firstDigtVal = digit2I(line.substr(firstDigitDistance));
 		}
 
-		std::cout << "First :" << findFirstDigitName(line) <<  "   Last: " << findLastDigitName(line) << std::endl; 
-		sum+=number;
+		size_t lastDigitDistance = findLastDigitName(line);
+		if (( not (lastDigitDistance == std::string::npos)) and (lastDigitDistance > (std::distance(line.begin(),lastDigit.base()) - 1)))
+		{
+			lastDigtVal = digit2I(line.substr(lastDigitDistance));
+		}
+
+		int val = firstDigtVal*10 + lastDigtVal;
+
+		sum+=val;
+
+
 	}
 
-	std::cout << "SumValue: " << sum << std::endl;
+	std::cout << "SumValue part2: " << sum << std::endl;
 	return 0;
 }
