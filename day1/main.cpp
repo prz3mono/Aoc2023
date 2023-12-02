@@ -19,8 +19,6 @@ class MyException: public std::exception
 
 	private:
 	std::string msg;
-
-
 };
 
 const std::array<std::string, 9> DIGIT_NAMES{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
@@ -76,22 +74,17 @@ int main(int argc, char* argv[])
 	std::ifstream infile("input.txt");
 	std::string line;
 	int sum{0};
-/*
+	int sum_part2{0};
+
 	while(infile >> line)
 	{
 		auto firstDigit = std::find_if(line.begin(), line.end(), [](const char& leter){return leter <= '9';});
 		auto lastDigit = std::find_if(line.rbegin(), line.rend(), [](const char& leter){return leter <= '9';});
 		int number = std::stoi(std::string{*firstDigit} + *lastDigit);
-		std::cout << line << " :" << number << std::endl;
 		sum+=number;
-	}
-	std::cout << "SumValue: " << sum << std::endl;
-*/
-	sum = 0;
-	while(infile >> line)
-	{
-		auto firstDigit = std::find_if(line.begin(), line.end(), [](const char& leter){return leter <= '9';});
-		auto lastDigit = std::find_if(line.rbegin(), line.rend(), [](const char& leter){return leter <= '9';});
+//part 2
+//------------------------------------------------------------------------------------------------------------------------------
+
 		unsigned int firstDigtVal = std::stoi(std::string{*firstDigit});
 		unsigned int lastDigtVal = std::stoi(std::string{*lastDigit});
 
@@ -109,11 +102,12 @@ int main(int argc, char* argv[])
 
 		int val = firstDigtVal*10 + lastDigtVal;
 
-		sum+=val;
+		sum_part2+=val;
 
 
 	}
 
-	std::cout << "SumValue part2: " << sum << std::endl;
+	std::cout << "SumValue: " << sum << std::endl;
+	std::cout << "SumValue part2: " << sum_part2 << std::endl;
 	return 0;
 }
