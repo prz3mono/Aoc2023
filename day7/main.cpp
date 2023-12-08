@@ -93,21 +93,44 @@ class Hand
 	}
 	bool operator<(const Hand& rhs)
 	{
-		return std::tie(this->type, this->cards[0], this->cards[1], this->cards[2], this->cards[4], this->cards[5])
-		     < std::tie(rhs.type, rhs.cards[0], rhs.cards[1], rhs.cards[2], rhs.cards[4], rhs.cards[5]);
+		if (this->type != rhs.type) return this->type < rhs.type;
+		if (this->cards[0] != rhs.cards[0]) return this->cards[0] < rhs.cards[0];
+		if (this->cards[1] != rhs.cards[1]) return this->cards[1] < rhs.cards[1];
+		if (this->cards[2] != rhs.cards[2]) return this->cards[2] < rhs.cards[2];
+		if (this->cards[3] != rhs.cards[3]) return this->cards[3] < rhs.cards[3];
+		if (this->cards[4] != rhs.cards[4]) return this->cards[4] < rhs.cards[4];
+
+
+		//return std::tie(this->type, this->cards[0], this->cards[1], this->cards[2], this->cards[4], this->cards[5])
+		//     < std::tie(rhs.type, rhs.cards[0], rhs.cards[1], rhs.cards[2], rhs.cards[4], rhs.cards[5]);
 
 	}
+	
+	
+	char num2card(unsigned int arg)	
+	{
+		switch (arg)
+		{
+		  case 10: return 'T';
+		  case 11: return 'J';
+		  case 12: return 'Q';
+		  case 13: return 'K';
+		  case 14: return 'A';
+		}
+		return '0'+arg;
+	}
+
 
 	std::string print()
 	{
 		std::stringstream ss;
-		ss << "Card: " << cards[0] << ", "
-				      << cards[1] << ", "
-				      << cards[2] << ", "
-				      << cards[3] << ", "
-				      << cards[4] << "\t" 
-				      << type2String(type)
-				      << "\t" << bid; 
+		ss << "Card: " << num2card(cards[0]) 
+			       << num2card(cards[1])
+			       << num2card(cards[2])
+			       << num2card(cards[3])
+			       << num2card(cards[4]) << "\t" 
+			       << type2String(type)
+			       << "\t" << bid; 
 		return ss.str();
 	}
 	
